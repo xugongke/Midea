@@ -1,0 +1,161 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="APP\adc.c" />
+    <ClCompile Include="APP\ch455i2c.c" />
+    <ClCompile Include="APP\ch455_main.c" />
+    <ClCompile Include="APP\display.c" />
+    <ClCompile Include="APP\gpio_init.c" />
+    <ClCompile Include="APP\key.c" />
+    <ClCompile Include="APP\main.c" />
+    <ClCompile Include="APP\motor_ctrl.c" />
+    <ClCompile Include="APP\para.c" />
+    <ClCompile Include="APP\src\burned.c" />
+    <ClCompile Include="APP\src\gpio_init.c" />
+    <ClCompile Include="APP\src\key.c" />
+    <ClCompile Include="APP\src\main.c" />
+    <ClCompile Include="APP\src\motor_ctrl.c" />
+    <ClCompile Include="APP\src\para.c" />
+    <ClCompile Include="APP\src\stm8s_it.c" />
+    <ClCompile Include="APP\stm8s_it.c" />
+    <ClCompile Include="STM8S_StdPeriph_Driver\src\stm8s_adc1.c" />
+    <ClCompile Include="STM8S_StdPeriph_Driver\src\stm8s_adc2.c" />
+    <ClCompile Include="STM8S_StdPeriph_Driver\src\stm8s_awu.c" />
+    <ClCompile Include="STM8S_StdPeriph_Driver\src\stm8s_beep.c" />
+    <ClCompile Include="STM8S_StdPeriph_Driver\src\stm8s_can.c" />
+    <ClCompile Include="STM8S_StdPeriph_Driver\src\stm8s_clk.c" />
+    <ClCompile Include="STM8S_StdPeriph_Driver\src\stm8s_exti.c" />
+    <ClCompile Include="STM8S_StdPeriph_Driver\src\stm8s_flash.c" />
+    <ClCompile Include="STM8S_StdPeriph_Driver\src\stm8s_gpio.c" />
+    <ClCompile Include="STM8S_StdPeriph_Driver\src\stm8s_i2c.c" />
+    <ClCompile Include="STM8S_StdPeriph_Driver\src\stm8s_itc.c" />
+    <ClCompile Include="STM8S_StdPeriph_Driver\src\stm8s_iwdg.c" />
+    <ClCompile Include="STM8S_StdPeriph_Driver\src\stm8s_rst.c" />
+    <ClCompile Include="STM8S_StdPeriph_Driver\src\stm8s_spi.c" />
+    <ClCompile Include="STM8S_StdPeriph_Driver\src\stm8s_tim1.c" />
+    <ClCompile Include="STM8S_StdPeriph_Driver\src\stm8s_tim2.c" />
+    <ClCompile Include="STM8S_StdPeriph_Driver\src\stm8s_tim3.c" />
+    <ClCompile Include="STM8S_StdPeriph_Driver\src\stm8s_tim4.c" />
+    <ClCompile Include="STM8S_StdPeriph_Driver\src\stm8s_tim5.c" />
+    <ClCompile Include="STM8S_StdPeriph_Driver\src\stm8s_tim6.c" />
+    <ClCompile Include="STM8S_StdPeriph_Driver\src\stm8s_uart1.c" />
+    <ClCompile Include="STM8S_StdPeriph_Driver\src\stm8s_uart2.c" />
+    <ClCompile Include="STM8S_StdPeriph_Driver\src\stm8s_uart3.c" />
+    <ClCompile Include="STM8S_StdPeriph_Driver\src\stm8s_wwdg.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="APP\adc.h" />
+    <ClInclude Include="APP\board.h" />
+    <ClInclude Include="APP\ch455i2c.h" />
+    <ClInclude Include="APP\ch455_main.h" />
+    <ClInclude Include="APP\display.h" />
+    <ClInclude Include="APP\gpio_cfg.h" />
+    <ClInclude Include="APP\inc\adc.h" />
+    <ClInclude Include="APP\inc\board.h" />
+    <ClInclude Include="APP\inc\gpio_cfg.h" />
+    <ClInclude Include="APP\inc\key.h" />
+    <ClInclude Include="APP\inc\motor_ctrl.h" />
+    <ClInclude Include="APP\inc\para.h" />
+    <ClInclude Include="APP\inc\stm8s_conf.h" />
+    <ClInclude Include="APP\inc\stm8s_it.h" />
+    <ClInclude Include="APP\key.h" />
+    <ClInclude Include="APP\motor_ctrl.h" />
+    <ClInclude Include="APP\para.h" />
+    <ClInclude Include="APP\stm8s_conf.h" />
+    <ClInclude Include="APP\stm8s_it.h" />
+    <ClInclude Include="STM8S_StdPeriph_Driver\inc\stm8s.h" />
+    <ClInclude Include="STM8S_StdPeriph_Driver\inc\stm8s_adc1.h" />
+    <ClInclude Include="STM8S_StdPeriph_Driver\inc\stm8s_adc2.h" />
+    <ClInclude Include="STM8S_StdPeriph_Driver\inc\stm8s_awu.h" />
+    <ClInclude Include="STM8S_StdPeriph_Driver\inc\stm8s_beep.h" />
+    <ClInclude Include="STM8S_StdPeriph_Driver\inc\stm8s_can.h" />
+    <ClInclude Include="STM8S_StdPeriph_Driver\inc\stm8s_clk.h" />
+    <ClInclude Include="STM8S_StdPeriph_Driver\inc\stm8s_exti.h" />
+    <ClInclude Include="STM8S_StdPeriph_Driver\inc\stm8s_flash.h" />
+    <ClInclude Include="STM8S_StdPeriph_Driver\inc\stm8s_gpio.h" />
+    <ClInclude Include="STM8S_StdPeriph_Driver\inc\stm8s_i2c.h" />
+    <ClInclude Include="STM8S_StdPeriph_Driver\inc\stm8s_itc.h" />
+    <ClInclude Include="STM8S_StdPeriph_Driver\inc\stm8s_iwdg.h" />
+    <ClInclude Include="STM8S_StdPeriph_Driver\inc\stm8s_rst.h" />
+    <ClInclude Include="STM8S_StdPeriph_Driver\inc\stm8s_spi.h" />
+    <ClInclude Include="STM8S_StdPeriph_Driver\inc\stm8s_tim1.h" />
+    <ClInclude Include="STM8S_StdPeriph_Driver\inc\stm8s_tim2.h" />
+    <ClInclude Include="STM8S_StdPeriph_Driver\inc\stm8s_tim3.h" />
+    <ClInclude Include="STM8S_StdPeriph_Driver\inc\stm8s_tim4.h" />
+    <ClInclude Include="STM8S_StdPeriph_Driver\inc\stm8s_tim5.h" />
+    <ClInclude Include="STM8S_StdPeriph_Driver\inc\stm8s_tim6.h" />
+    <ClInclude Include="STM8S_StdPeriph_Driver\inc\stm8s_uart1.h" />
+    <ClInclude Include="STM8S_StdPeriph_Driver\inc\stm8s_uart2.h" />
+    <ClInclude Include="STM8S_StdPeriph_Driver\inc\stm8s_uart3.h" />
+    <ClInclude Include="STM8S_StdPeriph_Driver\inc\stm8s_wwdg.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="STM8S_StdPeriph_Driver\Release_Notes.html" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{7FEA638D-938F-49B2-8075-A3E4D2A35D51}</ProjectGuid>
+    <RootNamespace>example_proj</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
