@@ -76,8 +76,9 @@ void EEPROM_ByteWrite(u8 ADDR,u8 da)
 void ResetAllPara(u8 user_flag)
 {
     buf[AC_MODE_TEMP_ADDR] = 75; // 市电模式及光伏默认75℃
-    buf[MIX_MODE_TEMP_ADDR] = 50; // 混动模式阶梯温度默认50
+    buf[MIX_MODE_TEMP_ADDR] = 55; // 混动模式阶梯温度默认55 (原50)
     buf[WORK_MODE_ADDR]     = MODE_MIX; //默认混动模式
+    buf[OPEN_STATE_ADDR]    = 0xa3;     //出厂默认关机 0x55:开机 0xa3:关机
     buf[FACTORY_MODE_ADDR]  = user_flag; //工厂模式 
     ssp_flag = 0xA5;   //	该语句最好紧接着放到擦除之前函数前
     EEPromSectorErase(0);

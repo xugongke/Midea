@@ -348,7 +348,7 @@ void USER_PROGRAM_INITIAL()
     time_boot =0;
     powerup_tick = 0;
     heat_start_sec = 0;
-    MixHeatUp = 50;
+    MixHeatUp = 55;   /*混动模式阶梯温度默认55℃ (原50)*/
     FactorMode = 0;
     fast_cnt = 0;
     ACHeatFlag = 0; //交流市电指示
@@ -357,7 +357,13 @@ void USER_PROGRAM_INITIAL()
     LastJLFlag =0; /*交流是否有效  0:无效  1:有效*/
     JLFlag = 0; /*交流是否有效  0:无效  1:有效*/
     open_cnt = 0;
-    done_close = 0;
+    /*读取断电前开关机状态: 0x55=开机(上电自动恢复开机) 其他=关机(保持关机)*/
+    if (EEPROM_ByteRead(OPEN_STATE_ADDR) == 0x55){
+        done_close = 0;   /*断电前为开机, 上电后允许自动恢复开机*/
+    }
+    else {
+        done_close = 1;   /*断电前为关机或首次上电, 保持关机*/
+    }
     TempCur = 0;
     TempLast = 0;
     ErrCode = 0;
@@ -399,8 +405,8 @@ void USER_PROGRAM_INITIAL()
     DCTempHeatUp = TempHeatUp;
     MixHeatUp = EEPROM_ByteRead(MIX_MODE_TEMP_ADDR);
     if ((MixHeatUp < HEAT_LOW_TEMP ) || (MixHeatUp > 60)){
-        MixHeatUp = 50;
-        //EEPROM_ByteWrite(MIX_MODE_TEMP_ADDR, MixHeatUp); //混动模式默认50℃
+        MixHeatUp = 55;   /*混动模式默认55℃ (原50)*/
+        //EEPROM_ByteWrite(MIX_MODE_TEMP_ADDR, MixHeatUp); //混动模式默认55℃
         ResetAllPara(0x00);
     }
     TempHeatDown = TempHeatUp - AC_DOWN_TEMP;
@@ -463,7 +469,7 @@ void ModeExchange(void)
         DCTempHeatUp = TempHeatUp;
         MixHeatUp = EEPROM_ByteRead(MIX_MODE_TEMP_ADDR);
         if ((MixHeatUp < HEAT_LOW_TEMP) || (MixHeatUp > 60)){
-            MixHeatUp = 50;
+            MixHeatUp = 55;   /*混动模式默认55℃ (原50)*/
             EEPROM_ByteWrite(MIX_MODE_TEMP_ADDR, MixHeatUp);
         }
         break;
@@ -512,7 +518,7 @@ void ModeExchangeCheckMode(void)
         DCTempHeatUp = TempHeatUp;
         MixHeatUp = EEPROM_ByteRead(MIX_MODE_TEMP_ADDR);
         if ((MixHeatUp < HEAT_LOW_TEMP) || (MixHeatUp > 60)){
-            MixHeatUp = 50;
+            MixHeatUp = 55;   /*混动模式默认55℃ (原50)*/
             EEPROM_ByteWrite(MIX_MODE_TEMP_ADDR, MixHeatUp);
         }
         break;
@@ -1005,21 +1011,16 @@ void USER_PROGRAM()
         if (revert > 1){
             revert = 0;
         }
-        /*只有光伏条件下自动打开显示屏*/
+        /*按断电前开关机状态恢复: done_close==0 表示断电前为开机, 上电后自动恢复开机*/
         if (RunState == FSM_IDLE){
-#if ACPOWER_ON_DIS_EN
-            if ((JLFlag == 1) ||  (GFFlag != 0)){ /*光伏或者市电存在则开机就显示*/
-#else 
-            if ((JLFlag == 0) && (GFFlag != 0)){ /*没有光伏*/
-#endif
+            if ((GFFlag != 0) || (JLFlag != 0)){ /*有电源(光伏或市电)才考虑自动开机*/
                 if (revert == 0){
                     open_cnt++;
                 }
-                //if (open_cnt > 2)
                 {
                     open_cnt = 0;
                     if (done_close == 0){
-                        key_valid = KEY_VALUE_SWTICH;//只有光伏存在情况下 自动开机显示温度
+                        key_valid = KEY_VALUE_SWTICH; /*恢复断电前开机状态*/
                     }
                 }
             }
@@ -1101,6 +1102,10 @@ void USER_PROGRAM()
             RunStateFlag &= ~KEEPING_FLAG;
             DisOpenState();
             key_valid = 0;
+            /*记录开机状态到EEPROM, 0x55=开机 (用于掉电记忆恢复)*/
+            if (EEPROM_ByteRead(OPEN_STATE_ADDR) != 0x55){
+                EEPROM_ByteWrite(OPEN_STATE_ADDR, 0x55);
+            }
             //break;
             //return;
         }
@@ -1123,6 +1128,10 @@ void USER_PROGRAM()
             RefreshLED = 1;
             DisInitState();
             key_valid = 0;
+            /*记录关机状态到EEPROM, 0xa3=关机 (用于掉电记忆恢复)*/
+            if (EEPROM_ByteRead(OPEN_STATE_ADDR) != 0xa3){
+                EEPROM_ByteWrite(OPEN_STATE_ADDR, 0xa3);
+            }
 
             //return;//break;
         }

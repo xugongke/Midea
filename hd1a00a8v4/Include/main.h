@@ -4,7 +4,7 @@
 
 /*显示软件版本号*/
 #define VERSION_MAJOR   0X00
-#define VERSION_MINOR   0X03
+#define VERSION_MINOR   0X04  /*T2默认55℃ + 开关机掉电记忆恢复*/
 
 #define TEST_ZHANHUI_EN 0   /*展会程序模式，只有交流电或直流的情况下，直流和交流的显示图标交替量，然后是10秒一次*/
 #define TEST_MODE_EN    0   /*测试模式, 用于3min加热10s停止 可靠性测试*/
@@ -20,7 +20,7 @@
 
 #define USER_MODE_FLAG    0X48
 
-#define OPEN_STATE_ADDR     4  /*开关机状态  0xa3:关机 其他默认开机*/
+#define OPEN_STATE_ADDR     4  /*开关机状态  0x55:开机  0xa3:关机(掉电记忆)*/
 #define FACTORY_MODE_ADDR   3  /*工厂模式  */
 #define WORK_MODE_ADDR      2 /*工作模式存储地址*/
 #define MIX_MODE_TEMP_ADDR  1  /*混动模式下温度存储地址 温度范围30~60*/
