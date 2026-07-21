@@ -156,6 +156,10 @@ extern vu8 time_dis;
  extern vu8 RunStateFlag;   /*运行状态*/
  extern vu8 RunState;   /*状态机*/
  extern vu8 Mode;   /*模式*/
+ extern u8 GFPVVol;  /*光伏电压(来自控制板, 单位V)*/
+ extern bit AutoMixFlag; /*纯光伏防呆自动切入混动标志(=WORK_MODE_ADDR bit7)*/
+ extern u16 VoltInRangeStart;  /*光伏电压连续在8~25V的起始time_boot*/
+ extern u16 VoltOutRangeStart; /*光伏电压越限起始time_boot*/
  extern bit done_flag; //加热完成标记
  extern bit ht_done_flag; //高温杀菌加热完成标记
  extern bit time_on_flag; // 预约到时标记
@@ -211,6 +215,7 @@ extern vu8 time_dis;
  void DisOpenStateDemo(void);
 #endif
  void KeyProcess(u8 key);
+ void FoolsafeCheck(void); /*[需求3]纯光伏防呆自动切换混动判定*/
 
 #define DOWN 2
 #define UP   1

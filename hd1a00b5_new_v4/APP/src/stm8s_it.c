@@ -353,6 +353,7 @@ INTERRUPT_HANDLER(TIM1_CAP_COM_IRQHandler, 12)
  extern u8 UartSendBuf[8]; /*UART接收缓冲区*/
  extern u8 UartSendLen; //要发送的数据长度
  extern u8 UartSendOff; //发送的偏移值
+ extern u8 InputVol;      /*光伏电压(V), main.c定义*/
  u8 tmp_rd;
  u16 GetTimeus(void);
 /**
@@ -444,7 +445,7 @@ INTERRUPT_HANDLER(TIM1_CAP_COM_IRQHandler, 12)
                     TempLow = TempHigh - 3; //直流温度阈值
                 }
                 UartSendBuf[0] = ~((u8)Temperature);//ACTempHigh; 当前温度备份
-                UartSendBuf[1] = TempHigh;
+                UartSendBuf[1] = InputVol;   /*回传光伏电压给显示板(纯光伏防呆用)*/
                 UartSendBuf[2] = CurState;
                 UartSendBuf[3] = (u8)Temperature;
                 CheckValue = 0;

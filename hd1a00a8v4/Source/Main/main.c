@@ -57,6 +57,10 @@ vu8 dis_min;   /*要显示的时钟 分钟*/
 
 u16 temp_refresh;
 vs8 TempCur ; /*当前水箱温度*/
+u8 GFPVVol = 0;       /*光伏电压(来自控制板, 单位V)*/
+bit AutoMixFlag = 0;  /*纯光伏防呆自动切入混动标志*/
+u16 VoltInRangeStart = 0;  /*光伏电压连续在8~25V的起始time_boot*/
+u16 VoltOutRangeStart = 0; /*光伏电压越限起始time_boot*/
 vs8 TempLast ; /*当前水箱温度*/
 vu8 FangdongFlag; //防冻标记
 
@@ -430,11 +434,14 @@ void ModeExchange(void)
         Mode = MODE_HIGH_TEMP;
     }
     else {
-        Mode = EEPROM_ByteRead(WORK_MODE_ADDR);
-        /*读取工作模式*/
+        u8 modeval = EEPROM_ByteRead(WORK_MODE_ADDR);
+        /*读取工作模式 (bit7=纯光伏防呆自动切入混动标记)*/
+        AutoMixFlag = (modeval & 0x80) ? 1 : 0;
+        Mode = modeval & 0x7F;
         /*市电加热模式记忆使能,则自动切换到对应模式*/
         if ((Mode == 0) || (Mode > MODE_MIX)){
             Mode = MODE_MIX;
+            AutoMixFlag = 0;
             EEPROM_ByteWrite(WORK_MODE_ADDR, Mode);
         }
     }
@@ -916,6 +923,50 @@ void ModeHeatProc(void)
         RunStateFlag &= ~FREEZE_FLAG;
     }
 }
+
+/*===== [需求3] 纯光伏模式防呆自动切换混动 =====
+   进入混动(仅纯光伏): 水温<T2 且 光伏电压持续2h在8~25V(越限>60秒才打断)
+   退出混动(仅防呆切入的混动): 水温>=T2 -> 切回纯光伏
+   防呆混动用 WORK_MODE_ADDR 的 bit7 标记, 与手动混动区分, 掉电保持*/
+void FoolsafeCheck(void)
+{
+    if ((Mode == MODE_CHECK) || (Mode == MODE_HIGH_TEMP) || (FactorMode != 0)){
+        return;  /*工厂/自检/高温杀菌模式不跑防呆*/
+    }
+
+    if (Mode == MODE_GF){
+        /*--- 进入判定 ---*/
+        if ((GFPVVol > 8) && (GFPVVol < 25)){
+            VoltOutRangeStart = 0;
+            if (VoltInRangeStart == 0){
+                VoltInRangeStart = (u16)time_boot;
+            }
+            if ((((u16)time_boot - VoltInRangeStart) >= (u16)7200) && (TempCur < MixHeatUp)){
+                /*持续2h电压在8~25V 且 水温<T2 -> 防呆切混动(bit7=1标记)*/
+                EEPROM_ByteWrite(WORK_MODE_ADDR, (u8)(MODE_MIX | 0x80));
+                ModeExchange();
+                VoltInRangeStart = 0;
+            }
+        }
+        else{
+            /*电压越限(<8 或 >25)*/
+            if (VoltOutRangeStart == 0){
+                VoltOutRangeStart = (u16)time_boot;
+            }
+            if (((u16)time_boot - VoltOutRangeStart) >= (u16)60){
+                VoltInRangeStart = 0;  /*越限持续>60秒, 清零2h计时*/
+            }
+        }
+    }
+    else if ((Mode == MODE_MIX) && (AutoMixFlag != 0)){
+        /*--- 退出判定: 仅防呆切入的混动 ---*/
+        if (TempCur >= MixHeatUp){
+            EEPROM_ByteWrite(WORK_MODE_ADDR, MODE_GF);
+            ModeExchange();
+            VoltInRangeStart = 0;
+        }
+    }
+}
 #ifdef TEST_TK_DATA
 unsigned short tick_tk_send;
 #endif
@@ -978,6 +1029,7 @@ void USER_PROGRAM()
     if (powerup_dis_proc() == 0){
         return; //上电显示逻辑还未结束
     }
+    FoolsafeCheck(); /*[需求3]纯光伏防呆自动切换混动判定*/
 #if TEST_ZHANHUI_EN
     Mode = MODE_CHECK;
     RunState = FSM_OPEN;
@@ -1307,6 +1359,7 @@ void RecvDataProc(void)
 
         if ((check == RecvBuf[4]) && (RecvBuf[3] == (u8)(~RecvBuf[0]))){ //校验合法
             err_com = 0;
+            GFPVVol = RecvBuf[1];  /*光伏电压(控制板回传, 用于纯光伏防呆)*/
 
             rcnt++;
             if (((s8)RecvBuf[3] < -10)||((s8)RecvBuf[3] > 94)){
